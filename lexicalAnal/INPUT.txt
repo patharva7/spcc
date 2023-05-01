@@ -1,0 +1,5 @@
+int i = 2 ; 
+int j = 45 ;
+int x = 12 ;
+int n ;
+     void *p , *add[5] ;
