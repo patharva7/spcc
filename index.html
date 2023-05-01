@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>NO COPY BE HAPPY</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body style="background-color:black; color: aliceblue;">
+    <pre><h1>SYMBOL TABLE</h1>
+        //Implementation of symbol table
+
+        #include<stdio.h>
+        #include<ctype.h>
+        #include<stdlib.h>
+        #include<string.h>
+        #include<math.h>
+        void main()
+        {
+             int i=0,j=0,x=0,n;
+             void *p,*add[5];
+             char ch,srch,b[15],d[15],c;
+             printf("Expression terminated by $:");
+             while((c=getchar())!='$')
+             {
+                  b[i]=c;
+                  i++;
+             }
+             n=i-1;
+             printf("Given Expression:");
+             i=0;
+             while(i<=n)
+             {
+                  printf("%c",b[i]);
+                  i++;
+             }
+             printf("\n Symbol Table\n");
+             printf("Symbol \t addr \t type");
+             while(j<=n)
+             {
+                  c=b[j];
+                  if(isalpha(toascii(c)))
+                  {
+                       p=malloc(c);
+                       add[x]=p;
+                       d[x]=c;
+                       printf("\n%c \t %p \t identifier\n",c,p);
+                       x++;
+                       j++;
+                  }
+                  else
+                  {
+                       ch=c;
+                       if(ch=='+'||ch=='-'||ch=='*'||ch=='=')
+                       {
+                            p=malloc(ch);
+                            add[x]=p;
+                            d[x]=ch;
+                            printf("\n%c \t %p \t operator\n",ch,p);
+                            x++;
+                            j++;
+                        }
+                          
+                  }
+                     
+             }
+            
+        }
+    </pre>
+    <pre>
+      <h1>RECURSIVE DECENT</h1>
+      #include<stdio.h>
+        #include<string.h>
+        #include<ctype.h>
+        char input[100];
+        int i=0,error;
+        void E();
+        void T();
+        void Edash();
+        void Tdash();
+        void F();
+        
+            void E(){
+             T();
+             Edash();
+           }
+           
+           
+            void Edash(){
+             if(input[i]=='+'){
+             i++;
+             T();
+             Edash();
+             }
+           }
+           
+           
+            void T(){
+                
+             F();
+             Tdash();
+            }
+            
+            
+            void Tdash(){
+             if(input[i]=='*'){
+                i++;
+                F();
+                Tdash();
+              }
+            }
+            
+            
+            void F()
+             {
+                  if(isalnum(input[i]))i++;
+                  else if(input[i]=='(')
+                  {
+                  i++;
+                  E();
+                  if(input[i]==')')
+                  i++;
+        
+                  else error=1;
+                    }
+                  else error=1;
+                  }
+        
+         void main()
+                  {
+                      i=0;
+                     error=0;
+                        printf("\n\nEnter an arithmetic expression   :  "); 
+                        gets(input);
+                        E();
+                        if(strlen(input)==i&&error==0)
+                           printf("\nThe String is parsed successfully!!\n");
+                        else printf("\nThe String is Rejected!!!\n");
+                    }
+    </pre>
+    <pre><h1>INTERMEDIATE CODE</h1>
+
+        print("Intermediate Code Generation:\n\n")
+
+        while True:
+           print("1. Assignment 2. Arithmetic 3. Relational 4. Exit") 
+           choice = int(input("Enter your choice: "))
+           if choice == 1:
+                expr = input("Enter the assignment expression: ")
+                parts = expr.split("=")
+                a1 = parts[0] 
+                a2 = parts[1]
+                print(f"temp = {a2}")
+                print(f"{a1} = temp")
+           elif choice == 2:
+               expr = input("Enter the arithmetic expression: ") 
+               parts = expr.split("=")
+               var = parts[0] 
+               rhs = parts[1] 
+               op = None
+        
+               for a_op in ["+", "-", "*", "/", "^", "%"]:
+                  if a_op in rhs:
+                      op = a_op 
+                      break
+        
+               if op is None:
+                 print("Invalid arithmetic expression") 
+                 continue
+               op_pos = rhs.index(op) 
+               operand1 = rhs[:op_pos] 
+               operand2 = rhs[op_pos + 1:]
+         
+        
+               print(f"temp = {operand1} {op} {operand2}") 
+               print(f"{var} = temp")
+        
+           elif choice == 3:
+             expr = input("Enter the relational expression: ") 
+             parts = list(expr)
+             print(parts)
+             if len(parts) != 3:
+                 print("Invalid relational expression")
+                 continue
+        
+             var1 = parts[0]
+             var2 = parts[2]
+             rel_op = parts[1] 
+             addr = 100
+        
+             print(f"{addr}: if {var1} {rel_op} {var2} goto {addr+3}") 
+             addr += 1
+             print(f"{addr}: t = 0") 
+             addr += 1
+             print(f"{addr}: goto {addr+2}") 
+             addr += 1
+             print(f"{addr}: t = 1")
+        
+           elif choice == 4: 
+            break
+        
+           else:
+            print("Invalid choice")
+                
+        </pre>
+<pre><h1>LEXICAL ANALYSIS(2 FILES) (INPUT.txt & lexi.py)</h1>
+    <h2>INPUT.txt</h2>
+    int i = 2 ; 
+    int j = 45 ;
+    int x = 12 ;
+    int n ;
+         void *p , *add[5] ;
+    </pre>
+<pre><h2>lexi.py</h2>
+def isfloat(num):
+  try:
+    float(num)
+    return True
+  except ValueError:
+    return False
+    
+keywords = "auto break case char const continue default do double else enum extern float for goto if int long register return short signed sizeof static struct switch typedef union unsigned void volatile while"
+kwList = keywords.split()
+
+
+operators = "+ - * / % ++ -- < = <= > >= == != && || ! ?: & | << >> ~ ^ += -= *= /= %= "
+oplist = operators.split()
+
+
+schar = "{ } ( ) $ @ ;"
+scharlist = schar.split()
+
+
+inputFile = open('INPUT.txt','r' )
+tokens = inputFile.read().split()
+
+
+for token in tokens:
+  if token in kwList:
+    print(token,"is keyword")
+  elif token in oplist:
+    print(token,"is operator")
+  elif token in scharlist:
+    print(token,"is special symbol")
+  elif token.isdigit() or isfloat(token):
+    print(token,"is constant")
+  elif token[0]=='"' or token[0]=="'":
+    print(token,"is literal")
+  else :
+    print(token,"is identifier")</pre>
+<pre><h1>MACROPROCESSOR 2PASS(3 FILES) (input.txt & main.c & mainpass2macro.c)</h1>
+<h2>input.txt</h2>
+** MACRO **
+** MATH **
+** ar 5,3
+** sr 5,4
+** MEND **
+
+pg1 START 0
+** USING *,15
+** 1 1,FIVE
+** MATH **
+FIVE DC H'5'
+** MATH **
+** MUL **
+** END **
+<h2>main.c</h2>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+
+int main(){
+    char label[10],opcode[10],operand[10];
+    int mntc=1,mdtc=1;
+    
+    FILE *fp1,*fp2,*fp3,*fp4;
+    fp1 = fopen("input.txt","r");
+    fp2 = fopen("mnt.txt","w");
+    fp3 = fopen("mdt.txt","w");
+    fp4 = fopen("copyfile.txt","w");
+    
+    fscanf(fp1,"%s %s %s",label,opcode,operand);
+    
+    while(strcmp(opcode,"END")!=0){
+        if(strcmp(opcode,"MACRO")==0){
+            fscanf(fp1,"%s %s %s",label,opcode,operand);
+            fprintf(fp2,"%d %s %d\n",mntc,opcode,mdtc);
+            mntc++;
+            while(strcmp(opcode,"MEND")!=0){
+                fprintf(fp3,"%d %s %s %s\n",mdtc,label,opcode,operand);
+                mdtc++;
+                fscanf(fp1,"%s %s %s",label,opcode,operand);
+            }
+            fprintf(fp3,"%d %s %s %s\n",mdtc,label,opcode,operand);
+            mdtc++;
+        }
+        else{
+            fprintf(fp4,"%s %s %s\n",label,opcode,operand);
+        }
+        fscanf(fp1,"%s %s %s",label,opcode,operand);
+    }
+    
+    fprintf(fp4,"%s %s %s\n",label,opcode,operand);
+    
+    fclose(fp1);
+    fclose(fp2);
+    fclose(fp3);
+    fclose(fp4);
+    
+    
+    return 0;
+}
+
+<h2>mainpass2macro.c</h2>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+
+int main(){
+    char label[10],opcode[10],operand[10],mntc[10],macroname[10],mdtc[10],mdtmdtc[10],ignore[10],mdtlabel[10],mdtvalue[10];
+    int flag = 0;
+    
+    FILE *fp1,*fp2,*fp3,*fp4;
+    fp1 = fopen("copyfile.txt","r");
+    fp2 = fopen("mnt.txt","r");
+    fp3 = fopen("mdt.txt","r");
+    fp4 = fopen("expandedSource.txt","w");
+    
+    fscanf(fp1,"%s %s %s",label,opcode,operand);
+    
+    while(strcmp(opcode,"END")!=0){
+        if(strcmp(opcode,"START")==0 || strcmp(opcode,"USING")==0 || strcmp(opcode,"DC")==0 || strcmp(opcode,"DS")==0 ){
+            fprintf(fp4,"%s %s %s\n",label,opcode,operand);
+        }
+        else{
+            fscanf(fp2,"%s %s %s",mntc,macroname,mdtc);
+            while(!feof(fp2)){
+                if(strcmp(opcode,macroname)==0){
+                    flag = 1;
+                    break;
+                }
+                fscanf(fp2,"%s %s %s",mntc,macroname,mdtc);
+            }
+            if(strcmp(opcode,macroname)==0){
+                flag = 1;
+            }
+            if(flag==1){
+                flag = 0;
+                fscanf(fp3,"%s %s %s %s",mdtmdtc,ignore,mdtlabel,mdtvalue);
+                while(strcmp(mdtc,mdtmdtc)!=0){
+                    fscanf(fp3,"%s %s %s %s",mdtmdtc,ignore,mdtlabel,mdtvalue);
+                }
+                fscanf(fp3,"%s %s %s %s",mdtmdtc,ignore,mdtlabel,mdtvalue);
+                while(strcmp(mdtlabel,"MEND")!=0){
+                    fprintf(fp4,"%s %s %s\n",ignore,mdtlabel,mdtvalue);
+                    fscanf(fp3,"%s %s %s %s",mdtmdtc,ignore,mdtlabel,mdtvalue);
+                }
+                rewind(fp3);
+            }
+            else{
+                fprintf(fp4,"%s %s %s\n",label,opcode,operand);
+            }
+            rewind(fp2);
+        }
+        fscanf(fp1,"%s %s %s",label,opcode,operand);
+    }
+    
+    fprintf(fp4,"%s %s %s\n",label,opcode,operand);
+    
+    fclose(fp1);
+    fclose(fp2);
+    fclose(fp3);
+    fclose(fp4);
+    
+    
+    return 0;
+}
+
+</pre><pre><h1>CODE GENERATION(2 FILES) (code.txt & codege.py)</h1>
+<h2>code.txt</h2>
+t=b+c
+v=d+e
+u=t-v
+w = t+u
+a=w
+<h2>codege.py</h2>
+import re
+operatorTable = {
+    "+": "ADD",
+    "-": "SUB",
+    "*": "MUL",
+    "/": "DIV",
+}
+
+registerTable = {}
+
+
+def getRegisterByIndex(index):
+    for [key, value] in enumerate(registerTable):
+        if value == 'R' + index:
+            return key
+
+    return -1
+
+
+def getRegisterByOperand(operand):
+    if operand not in registerTable.keys():
+        registerTable[operand] = "R" + str(len(registerTable))
+
+    return registerTable[operand]
+
+
+def parseLine(line):
+    line = line.strip().replace(" ", "")
+    print(line)
+
+    # Check for equals
+    if '=' not in line:
+        return
+
+    expression = line.split("=")
+
+    operands = re.split(r'[-+*/()]', expression[1])
+    operators = re.findall(r'[-+*/()]', expression[1])
+
+    # print(operands)
+    # print(operators)
+
+    setVarCode = ""
+    operationCode = ""
+
+    for op in operators:
+        if op not in operatorTable:
+            raise "Invalid Operator " + op
+
+        operationCode += operatorTable[op] + " "
+
+        # Get Operand 1 and its register
+        operand1 = operands.pop(0)
+
+        # Allocate Register to operand
+        if operand1 not in registerTable.keys():
+            setVarCode += f"MOV {operand1},"
+
+        register1 = getRegisterByOperand(operand1)
+
+        if len(setVarCode) > 1:
+            setVarCode += register1
+
+        # Get Operand 2 and its register
+        operand2 = operands.pop(0)
+
+        if operand2 in registerTable.keys():
+            operand2 = getRegisterByOperand(operand2)
+
+        operationCode += f"{operand2},{register1}"
+
+    if len(setVarCode) > 0:
+        print(setVarCode)
+    if len(operationCode) > 0:
+        print(operationCode)
+    print(f"{expression[0]} : {getRegisterByOperand(expression[0])}")
+    print()
+
+
+code = open("code.txt").readlines()
+
+for line in code[:]:
+    parseLine(line)
+
+#code.txt    
+# t=b+c
+# v=d+e
+# u=t-v
+# w = t+u
+# a=w
+</pre>
+<pre><h1>2PASS ASSEMBLER(4 FILE) (INPUT.txt & main.c & mainpass2.c & MOT.txt)</h1>
+<h2>INPUT.txt</h2>
+PG1 START 0
+** USING *,15
+** L 1,FIVE
+** A 1,FOUR
+** ST 1,TEMP
+FIVE DC H'5'
+FOUR DC H'4'
+TEMP DS 1H
+SIX  DC F'6'
+** END PG1
+<h2>main.c</h2>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+ 
+void main()
+{
+    char opcode[10], mnemonic[10], operand[10], label[10], code[10];
+    int locctr = 0, start, length, flag = 0;
+    FILE *fp1, *fp2, *fp3, *fp4;
+    fp1 = fopen("INPUT.txt", "r");
+    fp2 = fopen("st.txt", "w");
+    fp3 = fopen("out.txt", "w");
+    fp4 = fopen("MOT.txt", "r");
+ 
+    fscanf(fp1, "%s %s %s", label, opcode, operand);
+    if (strcmp(opcode, "START") == 0)
+    {
+        fprintf(fp3, "%s\t %s\t %s\n", label, opcode, operand);
+        fscanf(fp1, "%s %s %s", label, opcode, operand);
+    }
+    else
+        locctr = 0;
+    while (strcmp(opcode, "END") != 0)
+    {
+        // printf("inside the loop");
+        fprintf(fp3, "%d\t", locctr);
+        if (strcmp(label, "**") != 0)
+            fprintf(fp2, "%s\t%d\n", label, locctr);
+        fscanf(fp4, "%s", mnemonic);
+        // printf("%s\n",mnemonic);
+        // fscanf(fp1,"%s%s%s",label,opcode,operand);
+        if (strcmp(opcode, "DC") == 0)
+        {
+            if (operand[0] == 'F')
+            {
+                locctr += 4;
+            }
+            else
+            {
+                locctr += 2;
+            }
+        }
+        else if (strcmp(opcode, "DS") == 0)
+        {
+            if (operand[1] == 'F')
+            {
+                locctr += 4;
+            }
+            else
+            {
+                locctr += 2;
+            }
+        }
+        else if (strcmp(opcode, "USING") == 0)
+        {
+            locctr += 0;
+            // printf("\nusing\n");
+        }
+        // else if(strcmp(opcode,"BYTE")==0)
+        //++locctr;
+        while (strcmp(mnemonic, "END") != 0)
+        {
+            // printf("inside the loop");
+            printf("%s\t%s\n", opcode, mnemonic);
+ 
+            // printf("%s\n",mnemonic);
+            if (strcmp(opcode, mnemonic) == 0)
+            {
+                printf("\ninside the loop\n");
+                locctr += 4;
+                flag = 1;
+                // printf("%d\n",locctr);
+                // printf("%s\n",opcode);
+                break;
+            }
+            fscanf(fp4, "%s", mnemonic);
+        }
+        printf("%d\n", flag);
+        flag = 0;
+        fprintf(fp3, "%s\t%s\t%s\n", label, opcode, operand);
+        fscanf(fp1, "%s %s %s", label, opcode, operand);
+        rewind(fp4);
+    }
+    fprintf(fp3, "%d\t%s\t%s\t%s\n", locctr, label, opcode, operand);
+    // length=locctr-start;
+    printf("\nThe length of the program is %d", length);
+    fclose(fp1);
+    fclose(fp2);
+    fclose(fp3);
+    fclose(fp4);
+}
+<h2>mainpass2.c</h2>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+ 
+void main()
+{
+    char opcode[10], mnemonic[10], operand[10], operand1[10], label[10], code[10], address[10], sizeAddress[10], Motlabel[10];
+    int locctr = 0, start, length, flag = 0;
+    FILE *fp1, *fp2, *fp3, *fp4, *fp5, *fp6, *fp411;
+    fp1 = fopen("INPUT.txt", "r");
+    fp2 = fopen("st.txt", "r");
+    fp3 = fopen("out.txt", "r");
+    fp4 = fopen("MOT.txt", "r");
+    fp411 = fopen("MOT.txt", "r");
+    fp5 = fopen("BT.txt", "w");
+    fp6 = fopen("outTable.txt", "w");
+ 
+    fscanf(fp1, "%s %s %s", label, opcode, operand1);
+ 
+    if (strcmp(opcode, "START") == 0)
+    {
+        fscanf(fp1, "%s %s %s", label, opcode, operand1);
+    }
+    else
+        locctr = 0;
+    while (strcmp(opcode, "END") != 0)
+    {
+        fscanf(fp4, "%s", mnemonic);
+        fscanf(fp411, "%s", Motlabel);
+        while (strcmp(Motlabel, opcode) != 0 && strcmp(Motlabel, "END") != 0)
+        {
+            fscanf(fp411, "%s", Motlabel);
+        }
+ 
+        fscanf(fp411, "%s", Motlabel);
+        if (strcmp(Motlabel, "END") != 0)
+        {
+            char sub = operand1[0];
+            char substring[4];
+            int j = 0;
+            for (int i = 2; i < 6; i++)
+            {
+                substring[j++] = operand1[i];
+            }
+            fprintf(fp6, "%s %c, ", Motlabel, operand1[0]);
+            for (int i = 0; i < 4; i++)
+            {
+                fprintf(fp6, "%c", substring[i]);
+            }
+            fprintf(fp6, "\n");
+        }
+        rewind(fp411);
+        if (strcmp(opcode, "DC") == 0)
+        {
+            if (operand1[0] == 'F')
+            {
+                locctr += 4;
+            }
+            else
+            {
+                locctr += 2;
+            }
+            fprintf(fp6, "%d %c\n", locctr, operand1[2]);
+        }
+        else if (strcmp(opcode, "DS") == 0)
+        {
+            if (operand1[1] == 'F')
+            {
+                locctr += 4;
+            }
+            else
+            {
+                locctr += 2;
+            }
+            fprintf(fp6, "%d _\n", locctr);
+        }
+        else if (strcmp(opcode, "USING") == 0)
+        {
+            locctr += 0;
+            fprintf(fp5, "%c%c", operand1[2], operand1[3]);
+            printf("\nusing\n");
+        }
+        while (strcmp(mnemonic, "END") != 0)
+        {
+            printf("%s\t%s\n", opcode, mnemonic);
+            if (strcmp(opcode, mnemonic) == 0)
+            {
+                printf("\ninside the loop\n");
+                locctr += 4;
+                flag = 1;
+                break;
+            }
+            fscanf(fp4, "%s", mnemonic);
+        }
+        printf("%d\n", flag);
+        flag = 0;
+        fscanf(fp1, "%s %s %s", label, opcode, operand1);
+        rewind(fp4);
+    }
+    printf("\nThe length of the program is %d", length);
+}
+<h2>MOT.txt</h2>
+A 5A
+L 6A
+ST 7A
+END
+
+</pre>
+<pre><h1>Lexical Analysis</h1>
+<h2>constant vowel</h2>
+%{
+    #include <stdio.h>
+    int consonants = 0, vowels = 0;
+  %}
+  
+  %% 
+  [aeiouAEIOU] {vowels++;}
+  [a-zA-Z] {consonants++;}
+  %%
+  
+  int yywrap()
+  {
+    return 1;
+  }
+  
+  int main()
+  {
+    printf("Enter the string: ");
+    yylex();
+    printf("Vowels: %d, Consonants: %d\n", vowels, consonants);
+    return 0;
+  }
+  
+  // lex filename.l
+  // gcc lex.yy.c
+  // ./a.out
+  // ctrl + D
+<h2>Number_Class</h2>
+%{
+#include<stdio.h>
+int pos_num=0, pos_frac=0;
+int neg_num=0, neg_frac=0;
+%}
+
+%%
+[+]?[0-9]* {pos_num ++;}
+[+]?[0-9]*\.[0-9]+{pos_frac ++;}
+[-][0-9]*{neg_num++;}
+[-][0-9]*\.[0-9]+[neg_frac++;]
+%%
+int yywrap(){
+    return 1;
+}
+int main() {
+    printf("Enter the number : ");
+    yylex();
+    printf('Positive Num : %d, Positive frac : %d\n', pos_num, pos_frac);
+    printf('Negative Num : %d, Negative frac : %d\n', neg_num, neg_frac);
+    return 0;
+}
+<h2>Operator Operand</h2>
+%{
+#include<stdio.h>
+int operator=0, operand=0;
+%}
+
+%%
+[+\-\*\/\%^] {operator ++;}
+[a-zA-Z0-9]+ {operand ++;}
+%%
+int yywrap(){
+    return 1;
+}
+int main() {
+    printf("Enter the string : ");
+    yylex();
+    printf('Operators : %d, Operands : %d', operator, operand);
+    return 0;
+}
+<h2>Character Word Space</h2>
+%{
+#include<stdio.h>
+int char=0, word=0, newLine=0, space=0;
+%}
+
+%%
+[a-zA-Z]{1} {char ++;}
+[a-zA-Z]{2,} {word ++;}
+[\n] {newLine++;}
+[] {space++;}
+
+%%
+int yywrap(){
+    return 1;
+}
+int main() {
+    printf("Enter the string : ");
+    yylex();
+    printf('Char : %d, Spaces : %d, Words : %d, New Line : %d', char, space, word, newLine);
+    return 0;
+}
+<h2>Keyword, Operator, Special character</h2>
+%{
+#include<stdio.h>
+int operators = 0, special = 0, keywords = 0, identifier = 0, digits = 0;
+%}
+
+%%
+(int|float|double|string|if|else|do|while) {keywords++;}
+[\-\+\*\/] {operators++;}
+[\$\;\?] {special++;}
+[0-9]+ {digits++;}
+[a-zA-Z0-9]+ {identifier++;}
+%%
+
+int yywrap() {
+return 1;
+}
+
+main() {
+    printf("Enter String : ");
+    yylex();
+    printf("keywords %d\n", keywords);
+    printf("operators %d\n", operators);
+    printf("special %d\n", special);
+    printf("digits %d\n", digits);
+    printf("identifier %d\n", identifier);
+}
+
+</pre>
+<pre>
+<h3>to run lex following commands:
+save file with .l extention, ex Mylex.l
+lex Mylex.l (this will make a .c file in the directory)
+gcc lex.yy.c (this will create a .exe file)
+./a.out
+to terminate input, use ctrl+d
+</h3>
+</pre>
